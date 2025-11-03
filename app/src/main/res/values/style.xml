@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SquareEven">
+        <item name="android:color">@color/red_square</item>
+    </style>
+    <style name="SquareOdd">
+        <item name="android:color">@color/blue_square</item>
+    </style>
+</resources>

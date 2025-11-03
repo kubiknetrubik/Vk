@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Vk</string>
+    <string name="add_item_name">AddElement</string>
 </resources>
