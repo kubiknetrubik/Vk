@@ -39,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.width
 import  androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 
 object AppDemens{
@@ -124,7 +125,7 @@ private fun MyScreen(){
         ){
             Icon(
                 painter = painterResource(R.drawable.add_icon),
-                contentDescription = null
+                contentDescription = stringResource(R.string.add_item_name)
             )
 
         }
