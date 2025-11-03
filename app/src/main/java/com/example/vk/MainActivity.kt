@@ -39,10 +39,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.width
 import  androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.ui.unit.sp
+
+object AppDemens{
+    val toppadding=10.dp
+    val startpadding=10.dp
+    val bottompadding= 80.dp
+    val endpadding = 10.dp
+    val buttonpadding = 70.dp
+    val horspace = 30.dp
+    val verspace = 30.dp
+    val verticalpadding = 30.dp
+    val horizontalpadding = 10.dp
+    val text_size = 30.sp
+    val verticalpositioncolumnquantity=3
+    val horizontalpositioncolumnquantity=4
+
+}
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             MyScreen()
         }
@@ -58,20 +74,21 @@ private fun MyScreen(){
     val configuration = LocalConfiguration.current
     var columnq=0
     if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
-        columnq = 4
+        columnq = AppDemens.horizontalpositioncolumnquantity
     } else{
-        columnq = 3
+        columnq = AppDemens.verticalpositioncolumnquantity
     }
     Box(modifier = Modifier
         .fillMaxSize()
-        .padding(horizontal = 10.dp, vertical = 10.dp)
+        .padding(horizontal = AppDemens.horizontalpadding, vertical = AppDemens.verticalpadding)
     ){
         LazyVerticalGrid(
             columns = GridCells.Fixed(columnq),
-            contentPadding = PaddingValues(start = 10.dp, end = 10.dp, top= 10.dp, bottom= 60.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement =Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(start = AppDemens.startpadding, end = AppDemens.endpadding, top= AppDemens.toppadding, bottom= AppDemens.bottompadding),
+            verticalArrangement = Arrangement.spacedBy(AppDemens.verspace),
+            horizontalArrangement =Arrangement.spacedBy(AppDemens.horspace),
             modifier = Modifier.fillMaxSize()
+                .padding(bottom = AppDemens.buttonpadding)
         ){
             items(
                 count = list.size,
@@ -89,7 +106,8 @@ private fun MyScreen(){
                 ){
                     Text(
                         text=number.toString(),
-                        color = colorResource( R.color.text),
+                        color = colorResource( R.color.text_color),
+                        fontSize = AppDemens.text_size,
                         modifier = Modifier
                             .align(Alignment.Center)
                     )
@@ -102,7 +120,7 @@ private fun MyScreen(){
         Button(onClick = addItem,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(10.dp)
+
         ){
             Icon(
                 painter = painterResource(R.drawable.add_icon),

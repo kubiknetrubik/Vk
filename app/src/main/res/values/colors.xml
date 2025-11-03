@@ -9,5 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red_square">#EB0000</color>
     <color name="blue_square">#0018DB</color>
-    <color name="text">#050505</color>
+    <color name="text_color">#050505</color>
 </resources>
