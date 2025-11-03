@@ -15,11 +15,15 @@ import com.example.vk.ui.theme.VkTheme
 import androidx.compose.ui.platform.LocalConfiguration
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.ui.res.colorResource
@@ -33,6 +37,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.width
+import  androidx.compose.foundation.layout.aspectRatio
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +68,9 @@ private fun MyScreen(){
     ){
         LazyVerticalGrid(
             columns = GridCells.Fixed(columnq),
-            contentPadding = PaddingValues(10.dp),
+            contentPadding = PaddingValues(start = 10.dp, end = 10.dp, top= 10.dp, bottom= 60.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement =Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxSize()
         ){
             items(
@@ -75,9 +83,9 @@ private fun MyScreen(){
                     colorResource( R.color.blue_square)
                 }
                 Box(modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
                     .background(color = backgroundColor)
-                    .padding(horizontal = 3.dp, vertical = 7.dp)
                 ){
                     Text(
                         text=number.toString(),
