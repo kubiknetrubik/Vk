@@ -15,6 +15,7 @@ import com.example.vk.ui.theme.VkTheme
 import androidx.compose.ui.platform.LocalConfiguration
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.unit.dp
@@ -41,7 +42,9 @@ import androidx.compose.foundation.layout.width
 import  androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
-
+import androidx.compose.ui.platform.LocalContext
+import kotlin.jvm.java
+import android.content.Intent
 object AppDemens{
     val toppadding=10.dp
     val startpadding=10.dp
@@ -65,6 +68,28 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+class DActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val numm = intent.getIntExtra("Number",-1)
+        setContent {
+            DScreen(numm)
+        }
+    }
+}
+@Composable
+private fun DScreen(num: Int){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ){
+        Text(
+            text = num.toString(),
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -73,6 +98,7 @@ private fun MyScreen(){
     val list = (0 until itemCount).toList()
     val addItem: () -> Unit = { itemCount++ }
     val configuration = LocalConfiguration.current
+    val context = LocalContext.current
     var columnq=0
     if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
         columnq = AppDemens.horizontalpositioncolumnquantity
@@ -104,6 +130,12 @@ private fun MyScreen(){
                     .fillMaxWidth()
                     .aspectRatio(1f)
                     .background(color = backgroundColor)
+                    .clickable{
+                        val intent = Intent(context, DActivity::class.java)
+                        intent.putExtra("Number", number)
+                        context.startActivity(intent)
+
+                    }
                 ){
                     Text(
                         text=number.toString(),
