@@ -79,6 +79,7 @@ class DActivity : ComponentActivity() {
 }
 @Composable
 private fun DScreen(num: Int){
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -88,6 +89,12 @@ private fun DScreen(num: Int){
             modifier = Modifier
                 .align(Alignment.Center)
         )
+        Button(onClick ={val intent = Intent(context, MainActivity::class.java)
+            context.startActivity(intent)},
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+
+        ){}
     }
 }
 
