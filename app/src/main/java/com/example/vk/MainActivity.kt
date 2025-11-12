@@ -56,6 +56,7 @@ object AppDemens{
     val verticalpadding = 30.dp
     val horizontalpadding = 10.dp
     val text_size = 30.sp
+    val text_size2=100.sp
     val verticalpositioncolumnquantity=3
     val horizontalpositioncolumnquantity=4
 
@@ -86,6 +87,7 @@ private fun DScreen(num: Int){
     ){
         Text(
             text = num.toString(),
+            fontSize = AppDemens.text_size2,
             modifier = Modifier
                 .align(Alignment.Center)
         )
@@ -93,7 +95,12 @@ private fun DScreen(num: Int){
             modifier = Modifier
                 .align(Alignment.BottomEnd)
 
-        ){}
+        ){
+            Icon(
+                painter = painterResource(R.drawable.back_icon),
+                contentDescription = stringResource(R.string.add_item_name)
+            )
+        }
     }
 }
 
