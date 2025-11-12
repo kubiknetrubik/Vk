@@ -89,8 +89,7 @@ private fun DScreen(num: Int){
             modifier = Modifier
                 .align(Alignment.Center)
         )
-        Button(onClick ={val intent = Intent(context, MainActivity::class.java)
-            context.startActivity(intent)},
+        Button(onClick ={(context as? ComponentActivity)?.finish()},
             modifier = Modifier
                 .align(Alignment.BottomEnd)
 
