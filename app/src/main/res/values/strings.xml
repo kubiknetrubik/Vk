@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Vk</string>
     <string name="add_item_name">AddElement</string>
+    <string name="retry">Повторить</string>
+    <string name="err">Ошибка загрузки</string>
+
 </resources>
