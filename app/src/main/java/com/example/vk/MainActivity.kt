@@ -55,11 +55,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImagePainter
 import coil.request.CachePolicy
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModelProvider.Factory
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 
-
-
-
-
+import androidx.lifecycle.viewmodel.compose.viewModel
 val Context.dataStore by preferencesDataStore("gif_cache")
 
 data class GiphyResponse(val data: List<GifObject>)
@@ -71,9 +74,87 @@ interface GiphyApi {
     @GET("v1/gifs/trending")
     suspend fun trending(
         @Query("api_key") apiKey: String,
-        @Query("limit") limit: Int = 10,
+        @Query("limit") limit: Int = 20,
         @Query("offset") offset: Int = 0
     ): GiphyResponse
+}
+class Repository(
+    private val api: GiphyApi,
+    private val context: Context
+
+){
+    suspend fun loadPage(page: Int): List<String> {
+        val offset = page * 20
+
+        val resp = api.trending(
+            apiKey = BuildConfig.GiphyK,
+            limit = 20,
+            offset = offset
+        )
+
+        val urls = resp.data.map { it.images.original.url }
+        saveCache(urls)
+        return urls
+    }
+    suspend fun readCache(): List<String> {
+        val prefs = context.dataStore.data.first()
+        val json = prefs[stringPreferencesKey("cache")] ?: ""
+        return if (json.isEmpty()) listOf()
+        else Gson().fromJson(json, Array<String>::class.java).toList()
+    }
+
+    private suspend fun saveCache(list: List<String>) {
+        context.dataStore.edit { prefs ->
+            prefs[stringPreferencesKey("cache")] = Gson().toJson(list)
+        }
+    }
+
+}
+class GifViewModel(
+    private val repo: Repository
+) : ViewModel() {
+
+    var gifs by mutableStateOf<List<String>>(emptyList())
+        private set
+
+    var isLoading by mutableStateOf(false)
+    var isError by mutableStateOf(false)
+
+    private var page = 0
+
+    init {
+        loadInitial()
+    }
+
+    private fun loadInitial() {
+        viewModelScope.launch {
+            val cached = repo.readCache()
+            if (cached.isNotEmpty()) {
+                gifs = cached
+            } else {
+                loadNext()
+            }
+        }
+    }
+
+    fun loadNext() {
+        if (isLoading) return
+
+        isLoading = true
+        isError = false
+
+        viewModelScope.launch {
+            try {
+                val newData = repo.loadPage(page)
+                gifs = gifs + newData
+                page++
+            } catch (e: Exception) {
+                isError = true
+            } finally {
+                isLoading = false
+            }
+        }
+    }
 }
 class MainActivity : ComponentActivity() {
     val retrofit = Retrofit.Builder()
@@ -84,71 +165,31 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyScreenPreview(api)
+            val context = LocalContext.current
+
+            val vm: GifViewModel = viewModel(initializer = {GifViewModel(Repository(api, context))})
+            MyScreen(vm)
         }
     }
 }
 
 
 @Composable
-private fun MyScreen(api: GiphyApi){
+private fun MyScreen(vm: GifViewModel){
     val context = LocalContext.current
-    var gifs by rememberSaveable { mutableStateOf(listOf<String>()) }
-    var page by rememberSaveable { mutableStateOf(0) }
-    var isLoading by rememberSaveable { mutableStateOf(false) }
-    var isError by rememberSaveable { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
-
-
-    LaunchedEffect(Unit) {
-        val cached = readCache(context)
-        if (cached.isNotEmpty()) {
-            gifs = cached
-        } else {
-            loadGifs(api, page, gifs,
-                onSuccess = {
-                    gifs = it
-                    saveCache(context, gifs)
-                },
-                onError = { isError = true }
-            )
-        }
-    }
-
     when {
-        isError && gifs.isEmpty() -> ErrorScreen (onRetry = {
-                isError = false
-                scope.launch {
-                    loadGifs(
-                        api, page, gifs,
-                        onSuccess = { gifs = it; saveCache(context, gifs) },
-                        onError = { isError = true })
-                }
-            }
-        )
-        gifs.isEmpty() -> LoadingScreen()
+        vm.isError && vm.gifs.isEmpty() ->
+            ErrorScreen(onRetry = vm::loadNext)
+
+        vm.gifs.isEmpty() ->
+            LoadingScreen()
         else -> ContentScreen(
-            gifs = gifs,
-            onBottomReached = {
-                if (!isLoading) {
-                    isLoading = true
-                    page++
-                    scope.launch {
-                        loadGifs(
-                            api, page, gifs,
-                            onSuccess = {
-                                gifs = gifs + it
-                                saveCache(context, gifs)
-                                isLoading = false
-                            },
-                            onError = { isError = true; isLoading = false })
-                    }
-                }
-            },
+            gifs = vm.gifs,
+            isLoadingMore = vm.isLoading,
+            onBottomReached = vm::loadNext,
             onImageClick = { index ->
                 Toast.makeText(context, "GIF №${index + 1}", Toast.LENGTH_SHORT).show()
-            },
-            isLoadingMore = isLoading
+            }
         )
     }
 }
@@ -232,41 +273,3 @@ fun AsyncImageItem(url: String, index: Int, onClick: (Int) -> Unit) {
     }
 }
 
-
-suspend fun loadGifs(
-    api: GiphyApi,
-    page: Int,
-    current: List<String>,
-    onSuccess: (List<String>) -> Unit,
-    onError: () -> Unit
-) {
-    try {
-        val offset = page * 10
-        val resp = api.trending(apiKey = "p2msOoGTiNRYAZ36M90Zi9NAkKxJdsT6", limit = 10, offset = offset)
-        val urls = resp.data.map { it.images.original.url }
-        onSuccess(urls)
-    } catch (_: Exception) { onError() }
-}
-
-
-suspend fun readCache(context: Context): List<String> {
-    val prefs = context.dataStore.data.first()
-    val json = prefs[stringPreferencesKey("cache")] ?: ""
-    return if (json.isEmpty()) listOf() else Gson().fromJson(json, Array<String>::class.java).toList()
-}
-
-fun saveCache(context: Context, list: List<String>) {
-    val scope = CoroutineScope(Dispatchers.IO)
-    scope.launch {
-        context.dataStore.edit { prefs ->
-            prefs[stringPreferencesKey("cache")] = Gson().toJson(list)
-        }
-    }
-}
-
-@Composable
-fun MyScreenPreview(api: GiphyApi) {
-
-    MyScreen(api)
-
-}
