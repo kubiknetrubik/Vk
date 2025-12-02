@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import android.content.Context
@@ -14,12 +13,7 @@ import retrofit2.http.Query
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.LaunchedEffect
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -38,7 +32,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan.Companion.FullLine
@@ -57,19 +50,13 @@ import coil.compose.AsyncImagePainter
 import coil.request.CachePolicy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.ViewModelProvider.Factory
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 val Context.dataStore by preferencesDataStore("gif_cache")
-
 data class GiphyResponse(val data: List<GifObject>)
 data class GifObject(val images: GifImages)
 data class GifImages(val original: OriginalImage)
 data class OriginalImage(val url: String)
-
 interface GiphyApi {
     @GET("v1/gifs/trending")
     suspend fun trending(
