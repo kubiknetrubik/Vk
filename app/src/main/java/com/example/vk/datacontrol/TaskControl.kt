@@ -13,6 +13,7 @@ data class Task(
     val description: String,
     val isCompleted: Boolean
 )
+
 class TasksRepository(private val context: Context){
     private val gson = Gson()
     suspend fun loadTasks(): List<Task>{

@@ -22,6 +22,7 @@ fun BottomBar() {
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
+
         // Иконка магазина
         Image(
             painter = painterResource(id = R.drawable.shop),
