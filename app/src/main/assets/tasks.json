@@ -3,30 +3,35 @@
     "id": 1,
     "title": "Изучить Jetpack Compose",
     "description": "Разобраться с NavHost, ComposeView и управлением состояниями (State).",
-    "isCompleted": false
+    "isCompleted": false,
+    "cost": 20
   },
   {
     "id": 2,
     "title": "Сходить в спортзал",
     "description": "Кардио тренировка 40 минут и растяжка в конце занятия.",
-    "isCompleted": true
+    "isCompleted": true,
+    "cost": 10
   },
   {
     "id": 3,
     "title": "Купить продукты на неделю",
     "description": "Список: молоко, овсянка, куриная грудка, овощи и фрукты.",
-    "isCompleted": false
+    "isCompleted": false,
+    "cost": 13
   },
   {
     "id": 4,
     "title": "Подготовить отчет по ДЗ",
     "description": "Проверить отсутствие логов, убрать хардкод и настроить асинхронную загрузку с задержкой 2 сек.",
-    "isCompleted": false
+    "isCompleted": false,
+    "cost": 20
   },
   {
     "id": 5,
     "title": "Позвонить родителям",
     "description": "Узнать как дела и рассказать про успехи в обучении разработке на Android.",
-    "isCompleted": true
+    "isCompleted": true,
+    "cost": 10
   }
 ]

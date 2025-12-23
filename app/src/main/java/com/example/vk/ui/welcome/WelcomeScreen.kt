@@ -36,10 +36,11 @@ import com.example.vk.ui.theme.AppTextColor
 import com.example.vk.ui.theme.Error
 import com.example.vk.ui.theme.OrangePrimary
 import com.example.vk.ui.theme.SignupBackground
-
+import android.util.Log
 @Composable
-fun WelcomeScreen(navController: NavController) {
+fun WelcomeScreen(navController: NavController,login: String? = "", email: String?="", password: String?="") {
     val context = LocalContext.current
+
 
     Column(
         modifier = Modifier
@@ -99,7 +100,8 @@ fun WelcomeScreen(navController: NavController) {
             ContinueButton(
                 onClick = {
                     // Переход на экран первого входа
-                    navController.navigate(AppScreens.FirstEntryScreen.route)
+                    navController.navigate("first_entry/$login/$email/$password")
+                    //navController.navigate("first_entry/{email}/{password}")
                 }
             )
         }

@@ -151,6 +151,8 @@ fun EmailRegistrationScreen(navController: NavController) {
             onClick = {
                 Toast.makeText(context, "Continue with Email clicked", Toast.LENGTH_SHORT).show()
                 // TODO: Реализовать логику регистрации через email
+                navController.navigate("welcome/$login/$email/$password")
+                //navController.navigate("welcome/{login}/{email}/{password}")
             }
         )
 

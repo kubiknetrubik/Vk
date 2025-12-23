@@ -1,6 +1,7 @@
 package com.example.vk.ui.components.bars
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +16,10 @@ import androidx.compose.ui.unit.dp
 import com.example.vk.R
 
 @Composable
-fun BottomBar() {
+fun BottomBar(
+    onNavigatetoSettings: () -> Unit = {},
+    onNavigatetoTasks: () -> Unit = {}
+) {
     Row(
         modifier = Modifier
             .height(122.dp),
@@ -27,7 +31,8 @@ fun BottomBar() {
         Image(
             painter = painterResource(id = R.drawable.shop),
             contentDescription = "Shop",
-            modifier = Modifier.size(60.dp, 90.dp)
+            modifier = Modifier
+                .size(60.dp, 90.dp)
         )
 
         // Отступ между иконками
@@ -37,7 +42,9 @@ fun BottomBar() {
         Image(
             painter = painterResource(id = R.drawable.fox_icon),
             contentDescription = "Fox Icon",
-            modifier = Modifier.size(121.dp, 122.dp)
+            modifier = Modifier
+                .size(121.dp, 122.dp)
+                .clickable{onNavigatetoTasks()}
         )
 
         // Отступ между иконками
@@ -47,7 +54,9 @@ fun BottomBar() {
         Image(
             painter = painterResource(id = R.drawable.settings),
             contentDescription = "Settings",
-            modifier = Modifier.size(60.dp, 91.dp)
+            modifier = Modifier
+                .size(60.dp, 91.dp)
+                .clickable{onNavigatetoSettings()}
         )
     }
 }

@@ -10,4 +10,7 @@
     <color name="red_square">#EB0000</color>
     <color name="blue_square">#0018DB</color>
     <color name="text_color">#050505</color>
+    <color name="error">#EB0000</color>
+    <color name="accent">#FFB700</color>
+    <color name="grey">#FFC2A17E</color>
 </resources>
