@@ -1,6 +1,7 @@
 package com.example.vk.datacontrol
 
 import android.content.Context
+import com.example.vk.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -33,4 +34,9 @@ class TasksRepository(private val context: Context){
             return@withContext tasks
         }
     }
+    fun getMessage(resId: Int): String {
+        return context.getString(resId)
+    }
+
+
 }

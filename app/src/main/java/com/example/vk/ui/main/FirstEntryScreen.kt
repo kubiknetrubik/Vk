@@ -1,5 +1,6 @@
 package com.example.vk.ui.main
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,8 +29,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,6 +58,7 @@ class TaskViewModel (
 ): ViewModel(){
     private val _uiState = MutableStateFlow<TasksState>(TasksState.Loading)
     val uiState: StateFlow<TasksState> = _uiState
+
     fun load() {
         if (_uiState.value is TasksState.Success) return
         viewModelScope.launch {
@@ -61,7 +66,7 @@ class TaskViewModel (
             try{
                 val tasks = repo.loadTasks()
                 if (tasks.isEmpty()){
-                    _uiState.value = TasksState.Error("Нет задач")
+                    _uiState.value = TasksState.Error(repo.getMessage(R.string.errtasks))
                 }
                 else{
                     _uiState.value = TasksState.Success(tasks)
@@ -69,7 +74,7 @@ class TaskViewModel (
 
             }
             catch (e: Exception){
-                _uiState.value = TasksState.Error("Ошибка сети")
+                _uiState.value = TasksState.Error(repo.getMessage(R.string.errnet))
             }
         }
     }
@@ -106,7 +111,7 @@ fun TaskItem(task:Task){
         )
         Icon(
             painter = painterResource(id = R.drawable.dust),
-            contentDescription = "dust",
+            contentDescription = stringResource(R.string.dust),
             modifier = Modifier
                 .height(37.dp)
                 .width(25.dp)
@@ -130,60 +135,114 @@ onNavigatetoSettings: () -> Unit = {}
         vm.load()
     }
     val state by vm.uiState.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(SignupBackground),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
-    ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Image(
-            painter = painterResource(id = R.drawable.main_fox),
-            contentDescription = "fox",
-            modifier = Modifier.size(380.dp, 346.dp)
-        )
-        Box(
-            modifier = Modifier
-                .height(280.dp)
-                .width(380.dp)
-
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    if(isLandscape){
+        Row(
+            modifier = Modifier.fillMaxSize()
         ){
-            when(state){
-                is TasksState.Loading ->{
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+            Column(){
+                Image(
+                    painter = painterResource(id = R.drawable.main_fox),
+                    contentDescription = null,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+                BottomBar(onNavigatetoSettings=onNavigatetoSettings)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            Spacer(modifier = Modifier.width(150.dp))
+            Box(
+                modifier = Modifier
+                    .height(500.dp)
+                    .width(380.dp)
+            ) {
+                when(state){
+                    is TasksState.Loading ->{
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
+                        )
 
-                }
-                is TasksState.Success -> {
-                    Spacer(modifier = Modifier.height(20.dp))
-                    LazyColumn (
-                        modifier = Modifier
-                            .height(270.dp)
-                            .width(380.dp)
-                    ){
-                        items((state as TasksState.Success).tasks){task->
-                            TaskItem(task=task)
-                        }
                     }
+                    is TasksState.Success -> {
+                        Spacer(modifier = Modifier.height(20.dp))
+                        LazyColumn (
+                            modifier = Modifier
+                                .height(500.dp)
+                                .width(380.dp)
+                        ){
+                            items((state as TasksState.Success).tasks){task->
+                                TaskItem(task=task)
+                            }
+                        }
 
-                }
-                is TasksState.Error -> {
-                    Text(
-                        text = (state as TasksState.Error).message,
-                        modifier = Modifier.align(Alignment.Center),
-                        color = colorResource(R.color.error)
-                    )
+                    }
+                    is TasksState.Error -> {
+                        Text(
+                            text = (state as TasksState.Error).message,
+                            modifier = Modifier.align(Alignment.Center),
+                            color = colorResource(R.color.error)
+                        )
 
+                    }
                 }
             }
-
-
         }
 
+    }else{
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(SignupBackground),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Image(
+                painter = painterResource(id = R.drawable.main_fox),
+                contentDescription = stringResource(R.string.fox),
+                modifier = Modifier.size(380.dp, 346.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .height(280.dp)
+                    .width(380.dp)
 
-        BottomBar(onNavigatetoSettings=onNavigatetoSettings)
-        Spacer(modifier = Modifier.height(16.dp))
+            ){
+                when(state){
+                    is TasksState.Loading ->{
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+
+                    }
+                    is TasksState.Success -> {
+                        Spacer(modifier = Modifier.height(20.dp))
+                        LazyColumn (
+                            modifier = Modifier
+                                .height(270.dp)
+                                .width(380.dp)
+                        ){
+                            items((state as TasksState.Success).tasks){task->
+                                TaskItem(task=task)
+                            }
+                        }
+
+                    }
+                    is TasksState.Error -> {
+                        Text(
+                            text = (state as TasksState.Error).message,
+                            modifier = Modifier.align(Alignment.Center),
+                            color = colorResource(R.color.error)
+                        )
+
+                    }
+                }
+
+
+            }
+
+            BottomBar(onNavigatetoSettings=onNavigatetoSettings)
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }

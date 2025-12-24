@@ -13,4 +13,5 @@ sealed class AppScreens(val route: String){
     object SettingsScreenEmail : AppScreens("settings/{login}/{email}/{password}")
     object SettingsScreen : AppScreens("settings")
 
+
 }

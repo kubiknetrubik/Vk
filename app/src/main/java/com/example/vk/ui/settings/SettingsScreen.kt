@@ -1,5 +1,6 @@
 package com.example.vk.ui.settings
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,7 +35,7 @@ fun SettingsPart(text:String){
         modifier= Modifier
             .border(2.dp,OrangePrimary, RoundedCornerShape(10.dp))
             .height(53.dp)
-            .fillMaxWidth(),
+            .width(400.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(modifier = Modifier.width(10.dp))
@@ -45,47 +48,99 @@ fun SettingsPart(text:String){
 }
 @Composable
 fun SettingsScreen(login: String? = "", email: String?="", password: String?="", onNavigatetoTasks: () -> Unit = {}){
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    if(isLandscape){
+        Row(
+            modifier = Modifier.fillMaxSize()
+        ){
+            Box(
+                modifier = Modifier
+                    .weight(0.3f)
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                BottomBar(onNavigatetoTasks = onNavigatetoTasks)
+            }
+            Column(
+                modifier = Modifier
+                    .weight(0.7f)
+                    .fillMaxHeight()
+                    .background(SignupBackground)
+                    .padding(horizontal = 20.dp),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Top
+            ){
+                Spacer(modifier = Modifier.height(60.dp))
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(SignupBackground),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
-    ){
-        BottomBar(onNavigatetoTasks=onNavigatetoTasks)
+                Text(
+                    text = stringResource(R.string.profile),
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(bottom = 32.dp)
+                )
 
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(500.dp)
-            .background(SignupBackground)
-            .padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top
-    ){
-        Spacer(modifier = Modifier.height(60.dp))
+                Text(text = stringResource(R.string.login), fontSize = 14.sp, color = colorResource(R.color.black))
+                SettingsPart(login ?: "")
 
-        Text(
-            text = "Профиль",
-            fontSize = 32.sp,
-            fontWeight = FontWeight.ExtraBold,
-            modifier = Modifier.padding(bottom = 32.dp)
-        )
+                Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Логин", fontSize = 14.sp, color = colorResource(R.color.black))
-        SettingsPart(login ?: "")
+                Text(text = stringResource(R.string.email), fontSize = 14.sp, color = colorResource(R.color.black))
+                SettingsPart(email ?: "")
 
-        Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Электронная почта", fontSize = 14.sp, color = colorResource(R.color.black))
-        SettingsPart(email ?: "")
+                Text(text = stringResource(R.string.password), fontSize = 14.sp, color = colorResource(R.color.black))
+                SettingsPart(password ?: "")
+            }
 
-        Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Пароль", fontSize = 14.sp, color = colorResource(R.color.black))
-        SettingsPart(password ?: "")
+        }
+
+
+    }else{
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(SignupBackground),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+        ){
+            BottomBar(onNavigatetoTasks=onNavigatetoTasks)
+
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(500.dp)
+                .background(SignupBackground)
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top
+        ){
+            Spacer(modifier = Modifier.height(60.dp))
+
+            Text(
+                text = stringResource(R.string.profile),
+                fontSize = 32.sp,
+                fontWeight = FontWeight.ExtraBold,
+                modifier = Modifier.padding(bottom = 32.dp)
+            )
+
+            Text(text = stringResource(R.string.login), fontSize = 14.sp, color = colorResource(R.color.black))
+            SettingsPart(login ?: "")
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(text = stringResource(R.string.email), fontSize = 14.sp, color = colorResource(R.color.black))
+            SettingsPart(email ?: "")
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(text = stringResource(R.string.password), fontSize = 14.sp, color = colorResource(R.color.black))
+            SettingsPart(password ?: "")
+        }
+
     }
 
 

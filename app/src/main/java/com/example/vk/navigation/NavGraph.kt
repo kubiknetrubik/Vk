@@ -93,7 +93,7 @@ fun NavGraph(navController: NavHostController) {
             val login = backStackEntry.arguments?.getString("login")
             val email = backStackEntry.arguments?.getString("email")
             val password = backStackEntry.arguments?.getString("password")
-            SettingsScreen(onNavigatetoTasks = {navController.navigate(AppScreens.FirstEntryScreenEmail.route)},login = login,email = email,password =password)
+            SettingsScreen(onNavigatetoTasks = {navController.navigate("first_entry/$login/$email/$password")},login = login,email = email,password =password)
         }
         composable(route = AppScreens.SettingsScreen.route){
             SettingsScreen(onNavigatetoTasks = {navController.navigate(AppScreens.FirstEntryScreen.route)})

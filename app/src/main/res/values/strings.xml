@@ -3,6 +3,17 @@
     <string name="add_item_name">AddElement</string>
     <string name="retry">Повторить</string>
     <string name="err">Ошибка загрузки</string>
+    <string name="errtasks">Нет задач</string>
+    <string name="errnet">Ошибка сети</string>
+    <string name="dust">Игровая валюта</string>
+    <string name="fox">Персонаж</string>
+    <string name="settings">Настройки</string>
+    <string name="mainmenu">Главное меню</string>
+    <string name="shop">Магазин косметики</string>
+    <string name="profile">Профиль</string>
+    <string name="login">Логин</string>
+    <string name="email">Электронная почта</string>
+    <string name="password">Пароль</string>
 
 
 </resources>
