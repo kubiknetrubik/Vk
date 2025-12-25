@@ -39,17 +39,15 @@ import com.example.vk.ui.theme.SignupBackground
 @Composable
 fun EmailRegistrationScreen(navController: NavController) {
     val context = LocalContext.current
-    
-    // Переменные состояния для полей ввода
+
     var login by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-    
-    // Проверка совпадения паролей
+
     val passwordsMatch = password == confirmPassword || confirmPassword.isEmpty()
     
-    // Отображение сообщения об ошибке
+
     val showError = !passwordsMatch && confirmPassword.isNotEmpty()
 
     Column(
@@ -62,7 +60,7 @@ fun EmailRegistrationScreen(navController: NavController) {
     ) {
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Главный логотип
+
         Image(
             painter = painterResource(id = R.drawable.main_logo),
             contentDescription = "App Logo",
@@ -71,12 +69,12 @@ fun EmailRegistrationScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Общий модификатор для всех полей ввода
+
         val inputModifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
 
-        // Поле ввода логина
+
         TextInputField(
             modifier = inputModifier,
             placeholder = "Логин",
@@ -86,7 +84,7 @@ fun EmailRegistrationScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Поле ввода email
+
         TextInputField(
             modifier = inputModifier,
             placeholder = "Почта",
@@ -96,7 +94,7 @@ fun EmailRegistrationScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Поле ввода пароля
+
         PasswordInputField(
             modifier = inputModifier,
             placeholder = "Пароль",
@@ -106,7 +104,7 @@ fun EmailRegistrationScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Поле подтверждения пароля с обработкой ошибок
+
         PasswordInputField(
             modifier = inputModifier,
             placeholder = "Повторите пароль",
@@ -115,7 +113,7 @@ fun EmailRegistrationScreen(navController: NavController) {
             onValueChange = { confirmPassword = it }
         )
         
-        // Сообщение об ошибке при несовпадении паролей
+
         if (showError) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -131,7 +129,7 @@ fun EmailRegistrationScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Текст "Уже есть аккаунт?"
+
         Text(
             text = "Уже есть аккаунт? Авторизируйтесь",
             fontSize = 15.sp,
@@ -140,19 +138,19 @@ fun EmailRegistrationScreen(navController: NavController) {
             textDecoration = TextDecoration.Underline,
             modifier = Modifier.clickable {
                 Toast.makeText(context, "Sign in clicked", Toast.LENGTH_SHORT).show()
-                // TODO: Переход на экран авторизации
+
             }
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Кнопка "Продолжить"
+
         ContinueButton(
             onClick = {
                 Toast.makeText(context, "Continue with Email clicked", Toast.LENGTH_SHORT).show()
-                // TODO: Реализовать логику регистрации через email
+
                 navController.navigate("welcome/$login/$email/$password")
-                //navController.navigate("welcome/{login}/{email}/{password}")
+
             }
         )
 

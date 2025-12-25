@@ -65,7 +65,7 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Общий модификатор для всех кнопок
+
         val buttonModifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)

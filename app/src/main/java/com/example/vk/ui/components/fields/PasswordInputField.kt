@@ -90,8 +90,7 @@ fun PasswordInputField(
                     PasswordVisualTransformation('*')
                 }
             )
-            
-            // Иконка глаза
+
             IconButton(
                 onClick = { passwordVisible = !passwordVisible },
                 modifier = Modifier
