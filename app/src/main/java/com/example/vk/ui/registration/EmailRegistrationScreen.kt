@@ -44,6 +44,8 @@ fun EmailRegistrationScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var onclick by remember { mutableStateOf(false) }
+
 
     val passwordsMatch = password == confirmPassword || confirmPassword.isEmpty()
     
@@ -99,20 +101,20 @@ fun EmailRegistrationScreen(navController: NavController) {
             modifier = inputModifier,
             placeholder = "Пароль",
             value = password,
-            onValueChange = { password = it }
+            onValueChange = { password = it },
+            passwordVisible= onclick,
+            onclickpass = {onclick = !onclick}
+
         )
-
         Spacer(modifier = Modifier.height(12.dp))
-
-
         PasswordInputField(
             modifier = inputModifier,
-            placeholder = "Повторите пароль",
+            placeholder = "Пароль",
             value = confirmPassword,
-            borderColor = if (showError) Error else OrangePrimary,
-            onValueChange = { confirmPassword = it }
+            onValueChange = { confirmPassword = it },
+            passwordVisible = onclick,
+            onclickpass = {onclick = !onclick}
         )
-        
 
         if (showError) {
             Spacer(modifier = Modifier.height(8.dp))

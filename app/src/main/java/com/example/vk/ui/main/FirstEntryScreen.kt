@@ -58,6 +58,9 @@ class TaskViewModel (
 ): ViewModel(){
     private val _uiState = MutableStateFlow<TasksState>(TasksState.Loading)
     val uiState: StateFlow<TasksState> = _uiState
+    init{
+        load()
+    }
 
     fun load() {
         if (_uiState.value is TasksState.Success) return
@@ -131,9 +134,7 @@ fun TaskItem(task:Task){
 fun FirstEntryScreen(vm: TaskViewModel,
 onNavigatetoSettings: () -> Unit = {}
 ) {
-    LaunchedEffect(Unit) {
-        vm.load()
-    }
+
     val state by vm.uiState.collectAsState()
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE

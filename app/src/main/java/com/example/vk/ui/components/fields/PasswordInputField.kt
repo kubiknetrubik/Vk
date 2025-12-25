@@ -2,6 +2,7 @@ package com.example.vk.ui.components.fields
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -47,9 +48,11 @@ fun PasswordInputField(
     placeholder: String = "",
     value: String = "",
     borderColor: Color = OrangePrimary,
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (String) -> Unit = {},
+    passwordVisible:Boolean = false,
+    onclickpass: () -> Unit = {}
 ) {
-    var passwordVisible by remember { mutableStateOf(false) }
+
 
     Box(
         modifier = modifier
@@ -92,7 +95,7 @@ fun PasswordInputField(
             )
 
             IconButton(
-                onClick = { passwordVisible = !passwordVisible },
+                onClick = {onclickpass()},
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .padding(end = 4.dp)
