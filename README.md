@@ -1,7 +1,7 @@
 # Android Development Course Portfolio (VK)
 This repository contains my coursework and projects completed during the VK Android Mobile Development Course (2025). It showcases my transition from learning basic UI components to building a functional, data-driven application.
 
-🦊 Main Project: prototype of "Pixi" Task Manager
+🦊 Main Project: prototype of "Pixi" Task Manager 
 The core of this repository is Pixi, a productivity-focused application with a friendly fox mascot. The app is designed to help users track their daily tasks while providing an engaging and smooth user experience.
 
 Key Features:
