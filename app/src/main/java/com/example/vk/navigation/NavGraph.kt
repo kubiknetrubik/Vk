@@ -19,10 +19,6 @@ import com.example.vk.ui.settings.SettingsScreen
 import android.util.Log
 @Composable
 fun NavGraph(navController: NavHostController) {
-    val context = LocalContext.current
-    val vm: TaskViewModel = viewModel(
-        initializer = { TaskViewModel(TasksRepository(context))}
-    )
     NavHost(
         navController = navController,
         startDestination = AppScreens.SignUpScreen.route
@@ -77,11 +73,19 @@ fun NavGraph(navController: NavHostController) {
             WelcomeScreen(navController = navController,login,email,password)
         }
         composable(route = AppScreens.FirstEntryScreen.route) {
+            val context = LocalContext.current
+            val vm: TaskViewModel = viewModel(
+                initializer = { TaskViewModel(TasksRepository(context))}
+            )
             FirstEntryScreen(vm,onNavigatetoSettings = {
                 navController.navigate(AppScreens.SettingsScreen.route)
             })
         }
         composable(route = AppScreens.FirstEntryScreenEmail.route) {backStackEntry ->
+            val context = LocalContext.current
+            val vm: TaskViewModel = viewModel(
+                initializer = { TaskViewModel(TasksRepository(context))}
+            )
             val login = backStackEntry.arguments?.getString("login")
             val email = backStackEntry.arguments?.getString("email")
             val password = backStackEntry.arguments?.getString("password")
